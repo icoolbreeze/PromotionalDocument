@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1280">
     <title>AI 驱动的开源工程安全监测系统</title>
     <!-- 引入图标库 -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -1042,7 +1042,7 @@
                         <img src="固定式位移计.png" alt="固定式深层水平测斜仪" style="max-height: 100%; max-width: 100%;">
                     </div>
                     <h3>固定式深层水平测斜仪</h3>
-                    <p>SCL3300 传感器 + 自研滤波算法。实现全参数自动采集，0.001° 级高精度分辨率。</p>
+                    <p>SCL3300 传感器 + 自研滤波算法。实现深层水平位移自动采集，0.001° 级高精度分辨率。</p>
                     <div class="price-badge">每米成本 ≤ 200 元</div>
                 </div>
 
@@ -1051,8 +1051,8 @@
                         style="height:200px; background:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:15px; display:flex;align-items:center;justify-content:center; overflow:hidden;">
                         <img src="多功能边缘网关.png" alt="多功能采集单元" style="max-height: 100%; max-width: 100%;">
                     </div>
-                    <h3>多功能采集单元 (MCU)</h3>
-                    <p>32通道并发，支持振弦与数字传感器混合接入。内置 4G/LoRa，数据毫秒级上云。</p>
+                    <h3>多功能采集单元</h3>
+                    <p>32通道轮询测量，支持振弦与数字传感器混合接入。内置4G/LoRa，数据毫秒级上云。低功耗远程唤醒锂电池供电。</p>
                     <div class="price-badge">单台成本 ≤ 200 元</div>
                 </div>
 
@@ -1062,7 +1062,7 @@
                         <img src="倾角仪.png" alt="高精度倾角仪" style="max-height: 100%; max-width: 100%;">
                     </div>
                     <h3>高精度倾角仪</h3>
-                    <p>用于结构倾斜与变形监测。低功耗设计，支持 AI 边缘计算与异常触发唤醒。</p>
+                    <p>SCL3300 传感器 + 自研滤波算法，0.001° 级高精度分辨率。用于结构倾斜与变形监测。低功耗设计可远程唤醒。</p>
                     <div class="price-badge">单台成本 ≤ 200 元</div>
                 </div>
 
@@ -1072,7 +1072,7 @@
                         <img src="激光准直.png" alt="激光准直" style="max-height: 100%; max-width: 100%;">
                     </div>
                     <h3>激光准直系统</h3>
-                    <p>高精度激光测量，适用于隧道、桥梁等长距离线性监测场景。</p>
+                    <p>高精度激光测量，适用于基坑、隧道、桥梁等长距离线性监测场景。实现水平沉降位移监测分辨率0.1mm</p>
                     <div class="price-badge">高性价比方案</div>
                 </div>
             </div>
@@ -1089,7 +1089,8 @@
                     <ul style="color: var(--text-sub); margin-top: 10px; padding-left: 20px; line-height: 1.8;">
                         <li><strong>振弦类传感器：</strong>全面支持钢筋计、轴力计、渗压计、土压力盒、应变计、锚索测力计等，内置高精度扫频激励算法，确保数据精准。
                         </li>
-                        <li><strong>数字/模拟信号：</strong>支持 RS485 (Modbus)、4-20mA、0-5V 等通用接口设备接入。</li>
+                        <li><strong>数字/模拟信号：</strong>支持 RS485 (Modbus)、4-20mA、0-5V 等通用接口设备接入。全面支持测距仪、倾角仪、静力水准等数字信号传感器。
+                        </li>
                         <li><strong>统一传输：</strong>所有数据通过 MCU 汇聚，利用 4G/LoRa 网络实时上传至云端，实现“端-边-云”高效协同。</li>
                     </ul>
                 </div>
@@ -1113,7 +1114,7 @@
                         <div class="layer-box layer-ai">
                             <div class="layer-title"><i class="material-icons">psychology</i> AI 决策与控制</div>
                             <div class="layer-desc">
-                                <strong>N8n Workflow + AI 助手</strong><br>
+                                <strong>Workflow + AI 助手</strong><br>
                                 基于工作流的数据分析预测与决策，支持对传感器进行反向控制。
                             </div>
                         </div>
@@ -1137,8 +1138,8 @@
                     <div class="layer-box layer-platform">
                         <div class="layer-title"><i class="material-icons">hub</i> IoT 核心中台</div>
                         <div class="layer-desc">
-                            <strong>Thingsboard + JRC Service</strong><br>
-                            TB 规则链负责数据清洗、处理与持久化；JRC 提供全业务逻辑接口扩展。
+                            <strong>IoT Service + JRC Service</strong><br>
+                            IoT 规则链负责数据清洗、处理与持久化；JRC 提供全业务逻辑接口扩展。
                         </div>
                     </div>
 
