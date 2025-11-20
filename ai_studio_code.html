@@ -85,10 +85,10 @@
         .section-title::after {
             content: '';
             display: block;
-            width: 50px;
-            height: 4px;
-            background: var(--primary);
-            margin: 10px auto 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            margin: 12px auto 0;
             border-radius: 2px;
         }
 
@@ -139,7 +139,8 @@
             color: white;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0;
+            /* Remove gap between X and SENTRY */
             white-space: nowrap;
         }
 
@@ -267,19 +268,50 @@
         }
 
         /* 修复标题换行：使用 clamp 动态字体，flex 布局控制 */
+        /* Free Badge Style */
+        .free-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff5f6d, #ffc371);
+            color: white;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transform: rotate(-10deg) translateY(-10px);
+            box-shadow: 0 4px 15px rgba(255, 95, 109, 0.4);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            animation: floatBadge 2s ease-in-out infinite;
+            position: absolute;
+            top: -20px;
+            right: -10px;
+        }
+
+        @keyframes floatBadge {
+
+            0%,
+            100% {
+                transform: rotate(-10deg) translateY(-10px);
+            }
+
+            50% {
+                transform: rotate(-10deg) translateY(-15px);
+            }
+        }
+
         .hero-title-wrapper {
             margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
         }
 
         .hero h1 {
             font-size: clamp(2.2rem, 6vw, 4.5rem);
-            /* 核心修复：流体字体 */
             line-height: 1.1;
             font-weight: 800;
             letter-spacing: -1px;
             display: flex;
             flex-direction: column;
-            /* 垂直排列 */
             align-items: center;
             gap: 10px;
         }
@@ -483,134 +515,148 @@
         }
 
         /* =========================================
-           4. 系统架构 (垂直堆栈 - 移动端优化)
+           4. 系统架构 (横向流程 - 响应式)
            ========================================= */
         .arch-section {
             padding: var(--section-spacing) 0;
         }
 
         .arch-body {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-            gap: 40px;
-            align-items: flex-start;
-        }
-
-        .arch-graphic img {
-            width: 100%;
-            height: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
+            display: block;
+            /* Changed from grid to block for full width */
         }
 
         .stack-container {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            /* Horizontal by default */
+            gap: 20px;
+            align-items: stretch;
+            justify-content: space-between;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* 侧边指示线 (仅桌面显示) */
-        .stack-lines {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -50px;
-            right: -50px;
-            pointer-events: none;
-        }
-
-        .line-up,
-        .line-down {
-            position: absolute;
-            width: 2px;
-            top: 40px;
-            bottom: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .line-up {
-            left: 0;
-            background: linear-gradient(to top, var(--primary), transparent);
-        }
-
-        .line-down {
-            right: 0;
-            background: linear-gradient(to bottom, var(--accent), transparent);
-        }
-
-        /* 文字旋转 */
-        .line-text {
-            white-space: nowrap;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            background: var(--bg-core);
-            padding: 5px;
-        }
-
-        .text-up {
-            transform: rotate(-90deg);
-            color: var(--primary);
-        }
-
-        .text-down {
-            transform: rotate(90deg);
-            color: var(--accent);
+            padding: 20px 0;
         }
 
         .layer-box {
+            flex: 1;
             background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(2, 6, 23, 0.8));
             border: 1px solid var(--border-light);
             border-radius: 12px;
-            padding: 20px 30px;
+            padding: 24px 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            text-align: center;
             transition: 0.3s;
             z-index: 2;
+            min-height: 200px;
+            /* Ensure consistent height */
         }
 
         .layer-box:hover {
-            transform: scale(1.01);
+            transform: translateY(-5px);
             border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .layer-title {
             font-weight: 700;
             color: white;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 10px;
-            width: 35%;
+            width: 100%;
+        }
+
+        .layer-title i {
+            font-size: 2rem;
+            color: var(--primary);
+            background: rgba(14, 165, 233, 0.1);
+            padding: 12px;
+            border-radius: 50%;
+            margin-bottom: 5px;
         }
 
         .layer-desc {
             color: var(--text-sub);
             font-size: 0.9rem;
-            text-align: right;
-            width: 60%;
+            line-height: 1.6;
+            width: 100%;
         }
 
         .layer-ai {
             border-color: rgba(139, 92, 246, 0.4);
             background: rgba(139, 92, 246, 0.08);
             box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+            position: relative;
+            /* For badge or highlight */
         }
 
-        .layer-ai .layer-title {
+        .layer-ai .layer-title i {
             color: var(--accent);
+            background: rgba(139, 92, 246, 0.15);
         }
 
-        /* 架构图连接符 */
+        /* Horizontal Connector (Arrow) */
         .connector {
-            height: 16px;
-            width: 2px;
-            background: var(--border-light);
-            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            color: var(--text-sub);
+            font-size: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .connector::after {
+            content: '→';
+            font-family: monospace;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Mobile Adaptation */
+        @media (max-width: 900px) {
+            .stack-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .connector {
+                width: 100%;
+                height: 30px;
+                transform: rotate(90deg);
+                /* Rotate arrow for vertical flow */
+            }
+
+            .layer-box {
+                min-height: auto;
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .layer-title {
+                flex-direction: row;
+                width: auto;
+                margin-bottom: 0;
+                margin-right: 20px;
+            }
+
+            .layer-title i {
+                font-size: 1.5rem;
+                padding: 8px;
+                margin-bottom: 0;
+            }
+
+            .layer-desc {
+                text-align: left;
+                flex: 1;
+            }
         }
 
         /* 移动端架构图适配 */
@@ -653,8 +699,8 @@
         }
 
         /* =========================================
-           5. AI 引擎与开源
-           ========================================= */
+                5. AI 引擎与开源
+                ========================================= */
         .ai-box {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -722,16 +768,25 @@
         /* 登录跳转板块样式 */
         .login-redirect-section {
             position: relative;
-            padding: 80px 0;
+            padding: 220px 0;
+            /* 再次增加高度 */
             overflow: hidden;
             background:
+                /* 上下边缘无缝衔接 */
+                linear-gradient(to bottom, var(--bg-core) 0%, transparent 20%, transparent 80%, var(--bg-core) 100%),
+                /* 左右边缘无缝衔接 */
+                linear-gradient(to right, var(--bg-core) 0%, transparent 10%, transparent 90%, var(--bg-core) 100%),
+                /* 降低背景图透明度 (遮罩层) */
+                linear-gradient(rgba(2, 6, 23, 0.75), rgba(2, 6, 23, 0.75)),
+                /* 装饰光效 */
                 radial-gradient(circle at top, rgba(56, 189, 248, 0.35), transparent 55%),
                 radial-gradient(circle at bottom, rgba(129, 140, 248, 0.3), transparent 60%),
+                /* 背景图 */
                 url('redirectbg.png');
             background-color: var(--bg-core);
             background-size: cover;
             background-position: center;
-            background-blend-mode: soft-light, normal;
+            background-blend-mode: normal, normal, normal, soft-light, normal, normal;
         }
 
         .login-redirect-inner {
@@ -817,12 +872,102 @@
         }
 
         /* 页脚 */
+        /* 页脚 (Redesigned) */
         footer {
-            padding: 50px 20px;
+            background: #0f172a;
+            /* Darker background */
             border-top: 1px solid var(--border-light);
-            text-align: center;
-            font-size: 0.9rem;
+            padding-top: 80px;
+            padding-bottom: 30px;
             color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .footer-desc {
+            margin-top: 20px;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-sub);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .contact-list i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .footer-legal span {
+            margin-left: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .footer-legal span:hover {
+            color: white;
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -835,7 +980,7 @@
             <div class="logo-area">
                 <!-- Logo 图片 -->
                 <img src="logo.png" alt="系统 Logo" style="height: 32px; width: auto;">
-                <div class="logo">工程<span>监测</span></div>
+                <div class="logo">X<span>SENTRY</span></div>
                 <!-- 顶部新增的核心卖点 -->
                 <div class="header-price-badge">
                     <i class="material-icons" style="font-size:14px">sell</i> 全设备 &lt; 200元
@@ -864,8 +1009,9 @@
                 </div>
 
                 <div class="hero-title-wrapper">
+                    <div class="free-badge">FREE</div>
                     <h1>
-                        <span class="main-text">智能监测平台</span>
+                        <span class="main-text">助力数字化转型</span>
                         <span class="sub-text">AI 驱动的工程安全监测系统</span>
                     </h1>
                 </div>
@@ -938,9 +1084,14 @@
                 <div class="gateway-text">
                     <h3>多功能网关连接示意图</h3>
                     <p>
-                        多功能采集单元支持接入多种数字信号传感器，以及振弦类传感器（如钢筋计、轴力计等），
-                        通过统一网关完成数据采集与上报。
+                        多功能采集单元（MCU）具备强大的兼容性，支持混合接入多种传感器类型，满足复杂工程场景需求：
                     </p>
+                    <ul style="color: var(--text-sub); margin-top: 10px; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>振弦类传感器：</strong>全面支持钢筋计、轴力计、渗压计、土压力盒、应变计、锚索测力计等，内置高精度扫频激励算法，确保数据精准。
+                        </li>
+                        <li><strong>数字/模拟信号：</strong>支持 RS485 (Modbus)、4-20mA、0-5V 等通用接口设备接入。</li>
+                        <li><strong>统一传输：</strong>所有数据通过 MCU 汇聚，利用 4G/LoRa 网络实时上传至云端，实现“端-边-云”高效协同。</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -955,68 +1106,171 @@
             </div>
 
             <div class="arch-body">
-                <div class="arch-stack">
-                    <div class="stack-container">
-                        <!-- 侧边连线 (移动端隐藏) -->
-                        <div class="stack-lines">
-                            <div class="line-up"><span class="line-text text-up">数据上行</span></div>
-                            <div class="line-down"><span class="line-text text-down">控制下行</span></div>
-                        </div>
-
-                        <!-- 架构层级 -->
-                        <div class="layer-box">
-                            <div class="layer-title"><i class="material-icons">people</i> 用户层</div>
-                            <div class="layer-desc">业主 / 监测单位 / 设计院 / 监管平台</div>
-                        </div>
-                        <div class="connector"></div>
-
-                        <div class="layer-box">
-                            <div class="layer-title"><i class="material-icons">web</i> 应用终端层</div>
-                            <div class="layer-desc">
-                                Web 监测平台 / 移动端运维 APP / 可视化大屏
-                            </div>
-                        </div>
-                        <div class="connector"></div>
-
-                        <!-- AI层高亮 -->
+                <div class="stack-container">
+                    <!-- Top Row: Application & Intelligence -->
+                    <div class="arch-row">
+                        <!-- AI & Workflow -->
                         <div class="layer-box layer-ai">
-                            <div class="layer-title"><i class="material-icons">psychology</i> AI 智能决策层</div>
+                            <div class="layer-title"><i class="material-icons">psychology</i> AI 决策与控制</div>
                             <div class="layer-desc">
-                                AI 助手后台 / 自动化工作流引擎 / 速率趋势分析 / 风险分级评估
+                                <strong>N8n Workflow + AI 助手</strong><br>
+                                基于工作流的数据分析预测与决策，支持对传感器进行反向控制。
                             </div>
                         </div>
-                        <div class="connector"></div>
-
+                        <!-- User Terminals -->
                         <div class="layer-box">
-                            <div class="layer-title"><i class="material-icons">storage</i> 数据中台层</div>
+                            <div class="layer-title"><i class="material-icons">devices</i> 多端应用展现</div>
                             <div class="layer-desc">
-                                监测数据中台服务 / 时序数据库 / 设备模型管理 / 报警阈值配置
+                                <strong>Web 客户端 + 运维 APP</strong><br>
+                                JRC 服务提供统一接口，支持 PC 端大屏与移动端实时交互。
                             </div>
                         </div>
-                        <div class="connector"></div>
+                    </div>
 
-                        <div class="layer-box">
-                            <div class="layer-title"><i class="material-icons">settings_ethernet</i> 通信传输层</div>
-                            <div class="layer-desc">4G Cat.1 / NB-IoT / LoRa / MQTT 加密传输</div>
+                    <!-- Connector (Vertical) -->
+                    <div class="connector-vertical">
+                        <i class="material-icons">import_export</i>
+                        <span>JRC 统一接口服务</span>
+                    </div>
+
+                    <!-- Middle Row: Core Platform -->
+                    <div class="layer-box layer-platform">
+                        <div class="layer-title"><i class="material-icons">hub</i> IoT 核心中台</div>
+                        <div class="layer-desc">
+                            <strong>Thingsboard + JRC Service</strong><br>
+                            TB 规则链负责数据清洗、处理与持久化；JRC 提供全业务逻辑接口扩展。
                         </div>
-                        <div class="connector"></div>
+                    </div>
 
-                        <div class="layer-box">
-                            <div class="layer-title"><i class="material-icons">memory</i> 现场边缘层</div>
-                            <div class="layer-desc">
-                                设备固件 / 固定式测斜仪 / 采集单元 (边缘计算、存储)
-                            </div>
-                        </div>
-                        <div class="connector"></div>
+                    <!-- Connector (Vertical) -->
+                    <div class="connector-vertical">
+                        <i class="material-icons">arrow_upward</i>
+                        <span>MQTT 协议上报</span>
+                    </div>
 
-                        <div class="layer-box" style="background:rgba(255,255,255,0.03);">
-                            <div class="layer-title"><i class="material-icons">sensors</i> 物理感知层</div>
-                            <div class="layer-desc">振弦传感器 / 数字传感器 / 模拟信号</div>
+                    <!-- Bottom Row: Edge & Perception -->
+                    <div class="layer-box">
+                        <div class="layer-title"><i class="material-icons">router</i> 物理感知与边缘传输</div>
+                        <div class="layer-desc">
+                            <strong>物理感应层 + 边缘网关</strong><br>
+                            LoRa/LTE 边缘计算网关接入物理传感器，通过 MQTT 协议加密上云。
                         </div>
                     </div>
                 </div>
             </div>
 
+            <style>
+                /* Architecture Section Updates - Compact Mode */
+                .arch-section {
+                    padding: 40px 0;
+                    /* Reduced padding */
+                }
+
+                .stack-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                    align-items: center;
+                    width: 100%;
+                    max-width: 1000px;
+                    margin: 0 auto;
+                }
+
+                .arch-row {
+                    display: flex;
+                    gap: 20px;
+                    /* Reduced gap */
+                    width: 100%;
+                    justify-content: space-between;
+                }
+
+                .layer-box {
+                    flex: 1;
+                    width: 100%;
+                    min-height: 110px;
+                    /* Reduced min-height */
+                    padding: 15px 20px;
+                    /* Reduced padding */
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                }
+
+                .layer-title {
+                    font-weight: 700;
+                    color: white;
+                    font-size: 1rem;
+                    margin-bottom: 8px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .layer-desc {
+                    color: var(--text-sub);
+                    font-size: 0.85rem;
+                    line-height: 1.5;
+                }
+
+                .layer-platform {
+                    background: linear-gradient(145deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6));
+                    border: 1px solid var(--primary);
+                    box-shadow: 0 0 20px rgba(14, 165, 233, 0.1);
+                }
+
+                .connector-vertical {
+                    height: 30px;
+                    /* Reduced height */
+                    width: 2px;
+                    background: linear-gradient(to bottom, var(--border-light), var(--primary), var(--border-light));
+                    margin: 5px 0;
+                    /* Reduced margin */
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    color: var(--text-sub);
+                }
+
+                .connector-vertical i {
+                    background: var(--bg-core);
+                    border: 1px solid var(--border-light);
+                    border-radius: 50%;
+                    padding: 2px;
+                    /* Smaller padding */
+                    font-size: 1rem;
+                    /* Smaller icon */
+                    position: relative;
+                    z-index: 2;
+                }
+
+                .connector-vertical span {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(15px);
+                    white-space: nowrap;
+                    font-size: 0.75rem;
+                    /* Smaller font */
+                    color: var(--text-sub);
+                    background: rgba(2, 6, 23, 0.8);
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                }
+
+                @media (max-width: 768px) {
+                    .arch-row {
+                        flex-direction: column;
+                        gap: 15px;
+                    }
+
+                    .connector-vertical {
+                        height: 30px;
+                    }
+                }
+            </style>
+        </div>
         </div>
     </section>
 
@@ -1027,21 +1281,23 @@
                 <div class="ai-content">
                     <h3>前端监测平台</h3>
                     <p style="color:var(--text-sub); margin-bottom:20px;">
-                        基于 <strong>Next.js + React</strong> 构建的 Web 前端监测平台，为基坑工程提供项目级总览、设备告警联动、地图化监测点与报表输出，一站式服务业主与监测单位。
+                        基于 <strong>Next.js + React</strong> 构建的 Web
+                        前端监测平台，为基坑工程提供项目级总览、设备告警联动、地图化监测点与报表输出，一站式服务业主与监测单位。
                     </p>
                     <ul class="ai-list">
                         <li><i class="material-icons">dashboard</i>
-                            <strong>项目级安全总览：</strong>首页仪表盘集中展示项目进度、基坑深度、关键责任人信息，并支持在线编辑项目信息。
+                            <strong>项目安全总览：</strong>集中展示项目核心指标，支持在线管理。
                         </li>
                         <li><i class="material-icons">sensors</i>
-                            <strong>设备与告警联动：</strong>与设备管理、告警中心打通，统计在线/离线/告警设备数量，结合时间维度查看近期告警。
+                            <strong>设备告警联动：</strong>实时统计设备状态，多维度查看告警信息。
                         </li>
-                        <li><i class="material-icons">map</i> <strong>地图化监测点总览：</strong>基于天地图与
-                            OpenLayers，在地图上按状态着色监测点，悬停即可查看关键遥测数据与异常原因。</li>
-                        <li><i class="material-icons">insights</i> <strong>多维度趋势分析：</strong>集成
-                            ECharts，对位移、倾角等多参数按时间窗口进行趋势曲线展示，为风险评估提供数据支撑。</li>
-                        <li><i class="material-icons">chat</i> <strong>内置 AI 助手：</strong>支持在前端界面侧边栏呼出 AI
-                            助手，以自然语言查询设备状态、告警原因与历史趋势。</li>
+                        <li><i class="material-icons">map</i> <strong>地图化监测：</strong>基于 GIS
+                            地图，直观展示监测点状态与关键数据。</li>
+                        <li><i class="material-icons">insights</i> <strong>多维度分析：</strong>集成
+                            ECharts，提供专业的数据趋势曲线与风险评估。
+                        </li>
+                        <li><i class="material-icons">chat</i> <strong>内置 AI
+                                助手：</strong>自然语言交互，快速查询设备状态与历史趋势。</li>
                     </ul>
                 </div>
                 <div class="ai-image-placeholder"
@@ -1062,10 +1318,16 @@
                         系统不仅仅是数据的搬运工。内置的 AI 分析引擎让平台具备了“思考”能力，实现从被动监测到主动预警的跨越。
                     </p>
                     <ul class="ai-list">
-                        <li><i class="material-icons">trending_up</i> <strong>智能趋势预测：</strong>基于历史数据自动外推变形趋势。</li>
-                        <li><i class="material-icons">account_tree</i> <strong>自动化工作流：</strong>配置“超限→AI 复核→告警”全流程。</li>
-                        <li><i class="material-icons">chat</i> <strong>对话式助手：</strong>自然语言查询监测数据与状态。</li>
-                        <li><i class="material-icons">assignment</i> <strong>自动报告生成：</strong>一键生成日报/周报草稿。</li>
+                        <li><i class="material-icons">trending_up</i>
+                            <strong>智能趋势预测：</strong>基于历史数据自动外推变形趋势。
+                        </li>
+                        <li><i class="material-icons">account_tree</i> <strong>自动化工作流：</strong>配置“超限→AI
+                            复核→告警”全流程。</li>
+                        <li><i class="material-icons">chat</i> <strong>对话式助手：</strong>自然语言查询监测数据与状态。
+                        </li>
+                        <li><i class="material-icons">assignment</i>
+                            <strong>自动报告生成：</strong>一键生成日报/周报草稿。
+                        </li>
                     </ul>
                 </div>
                 <div class="ai-image-placeholder"
@@ -1086,11 +1348,14 @@
                 </p>
                 <ul style="list-style: none; color: var(--text-sub);">
                     <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
-                            class="material-icons" style="color: var(--primary);">check_circle</i> 实时数据查看</li>
+                            class="material-icons" style="color: var(--primary);">check_circle</i>
+                        实时数据查看</li>
                     <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
-                            class="material-icons" style="color: var(--primary);">check_circle</i> 蓝牙/NFC 设备配置</li>
+                            class="material-icons" style="color: var(--primary);">check_circle</i>
+                        蓝牙/NFC 设备配置</li>
                     <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
-                            class="material-icons" style="color: var(--primary);">check_circle</i> 现场照片上传与标注</li>
+                            class="material-icons" style="color: var(--primary);">check_circle</i>
+                        现场照片上传与标注</li>
                 </ul>
             </div>
             <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
@@ -1153,19 +1418,139 @@
     <!-- 页脚 -->
     <footer id="contact">
         <div class="container">
-            <div class="logo" style="justify-content:center; margin-bottom:20px;">
-                工程<span>监测</span>
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div class="footer-col brand-col">
+                    <div class="logo">X<span>SENTRY</span></div>
+                    <p class="footer-desc">
+                        致力于提供高精度、低成本、全开源的工程安全监测解决方案。赋能行业，智造未来。
+                    </p>
+                </div>
+
+                <!-- Links Column -->
+                <div class="footer-col">
+                    <h4>产品与服务</h4>
+                    <ul class="footer-links">
+                        <li><a href="#hardware">智能硬件</a></li>
+                        <li><a href="#frontend-ui">监测平台</a></li>
+                        <li><a href="#mobile-app">移动运维</a></li>
+                        <li><a href="#opensource">开源方案</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Column -->
+                <div class="footer-col">
+                    <h4>联系我们</h4>
+                    <ul class="contact-list">
+                        <li>
+                            <i class="material-icons">person</i>
+                            <span>项目负责人：万世平</span>
+                        </li>
+                        <li>
+                            <i class="material-icons">phone</i>
+                            <span>17788730569</span>
+                        </li>
+                        <li>
+                            <i class="material-icons">email</i>
+                            <span>845157204@qq.com</span>
+                        </li>
+                        <li>
+                            <i class="material-icons">location_on</i>
+                            <span>四川省成都市高新区天府二街国资大厦</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <p>联系人：[ 某某工程师 ] &nbsp;|&nbsp; 电话：[ XXXX-XXXXXXX ] &nbsp;|&nbsp; 邮箱：[ contact@xxx.com ]</p>
-            <p style="margin-top:10px; opacity:0.5; font-size:0.8rem;">
-                &copy; 2023 工程安全监测解决方案. All Rights Reserved. 本页面仅作为产品演示用途。
-            </p>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 工程安全监测解决方案. All Rights Reserved.</p>
+                <div class="footer-legal">
+                    <span>隐私政策</span>
+                    <span>服务条款</span>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- 滚动检测脚本 + 登录跳转三维动效 -->
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox-modal">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <style>
+        /* Lightbox Styles */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 1200px;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .lightbox-close:hover,
+        .lightbox-close:focus {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Add cursor pointer to zoomable images */
+        .device-card img,
+        .gateway-image img,
+        .arch-graphic img,
+        .ai-image-placeholder img,
+        #mobile-app img {
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+    </style>
+
+    <!-- 滚动检测脚本 + 登录跳转三维动效 + Lightbox -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // ... (Existing Scroll & 3D Logic) ...
             const reveals = document.querySelectorAll('.reveal');
             const checkScroll = () => {
                 const triggerBottom = window.innerHeight * 0.85;
@@ -1223,6 +1608,32 @@
                 loginSection.addEventListener('mousemove', handleBgMove);
                 loginSection.addEventListener('mouseleave', resetBg);
             }
+
+            // Lightbox Logic
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const closeBtn = document.querySelector('.lightbox-close');
+
+            // Select images to be zoomable
+            const zoomableImages = document.querySelectorAll('.device-card img, .gateway-image img, .arch-graphic img, .ai-image-placeholder img, #mobile-app img');
+
+            zoomableImages.forEach(img => {
+                img.addEventListener('click', function () {
+                    lightbox.style.display = "flex"; // Use flex to center if needed, or block
+                    lightbox.style.display = "block";
+                    lightboxImg.src = this.src;
+                });
+            });
+
+            closeBtn.addEventListener('click', function () {
+                lightbox.style.display = "none";
+            });
+
+            lightbox.addEventListener('click', function (e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = "none";
+                }
+            });
         });
     </script>
 </body>
