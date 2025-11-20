@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 驱动的开源工程安全监测系统</title>
+    <!-- 引入图标库 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 引入现代字体 -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+SC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* =========================================
+           1. 全局变量 & 基础样式
+           ========================================= */
+        :root {
+            --bg-core: #020617;
+            --bg-card: rgba(30, 41, 59, 0.5);
+            --primary: #0ea5e9;
+            /* 科技蓝 */
+            --accent: #8b5cf6;
+            /* 智能紫 */
+            --highlight: #2dd4bf;
+            /* 价格青 */
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --border-light: rgba(255, 255, 255, 0.1);
+
+            --container-width: 1200px;
+            --section-spacing: 100px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-core);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* 科技感背景网格 */
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* 通用容器 */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+        }
+
+        /* 标题样式 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 0 15px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            /* 响应式字体 */
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 动画 */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* =========================================
+           2. 导航栏 (适配移动端)
+           ========================================= */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: var(--header-height);
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        /* 核心价格标签 (Header新增) */
+        .header-price-badge {
+            background: rgba(45, 212, 191, 0.15);
+            color: var(--highlight);
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .contact-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: var(--primary);
+            color: white;
+            white-space: nowrap;
+        }
+
+        /* 移动端导航适配 */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+
+            /* 小屏隐藏中间菜单 */
+        }
+
+        @media (max-width: 480px) {
+            .logo span {
+                display: none;
+            }
+
+            /* 极小屏隐藏文字，只留Logo图和Tag */
+            .logo::after {
+                content: 'LOGO';
+                color: var(--primary);
+            }
+
+            .contact-btn {
+                display: none;
+            }
+
+            /* 极小屏隐藏按钮 */
+        }
+
+        /* =========================================
+           3. Hero 区域 (修复换行与排版)
+           ========================================= */
+        .hero {
+            padding-top: calc(var(--header-height) + 40px);
+            padding-bottom: 80px;
+            overflow: hidden;
+            /* 防止光效溢出 */
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .hero-tag {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid;
+            backdrop-filter: blur(4px);
+        }
+
+        .tag-1 {
+            color: var(--primary);
+            border-color: rgba(14, 165, 233, 0.3);
+            background: rgba(14, 165, 233, 0.1);
+        }
+
+        .tag-2 {
+            color: var(--highlight);
+            border-color: rgba(45, 212, 191, 0.3);
+            background: rgba(45, 212, 191, 0.1);
+        }
+
+        .tag-3 {
+            color: var(--accent);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        /* 修复标题换行：使用 clamp 动态字体，flex 布局控制 */
+        .hero-title-wrapper {
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
+            /* 核心修复：流体字体 */
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            flex-direction: column;
+            /* 垂直排列 */
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero h1 .main-text {
+            color: white;
+        }
+
+        .hero h1 .sub-text {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .webapp-shot {
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.25);
+            overflow: hidden;
+        }
+
+        .webapp-shot img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .webapp-shot-caption {
+            margin-top: 10px;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+        }
+
+
+        /* 核心理念框 */
+        .philosophy-box {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            padding: 24px;
+            background: linear-gradient(90deg, rgba(14, 165, 233, 0.05), rgba(139, 92, 246, 0.05));
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .philosophy-text {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
+
+        .philosophy-sub {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        .hero-desc {
+            color: var(--text-sub);
+            max-width: 650px;
+            margin: 0 auto 40px;
+            font-size: 1rem;
+            padding: 0 20px;
+        }
+
+        .btn-hero {
+            padding: 14px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-hero:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.6);
+        }
+
+        /* 设备卡片网格 (Responsive) */
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* 默认4列 */
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .device-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            padding: 24px;
+            border-radius: 16px;
+            text-align: left;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .device-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--highlight);
+        }
+
+        .device-card h3 {
+            font-size: 1.2rem;
+            margin: 15px 0 10px;
+        }
+
+        .device-card p {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .price-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--highlight);
+            background: rgba(45, 212, 191, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        /* 响应式断点优化 */
+        @media (max-width: 1100px) {
+            .device-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* 中屏2列 */
+        }
+
+        @media (max-width: 600px) {
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 小屏1列 */
+        }
+
+        /* 多功能网关连接示意图布局（硬件区下方） */
+        .gateway-layout {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-top: 50px;
+            background: rgba(30, 41, 59, 0.3);
+            /* 轻微背景区分 */
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+        }
+
+        .gateway-image {
+            flex: 1;
+        }
+
+        .gateway-text {
+            flex: 1;
+        }
+
+        .gateway-image img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+
+        .gateway-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .gateway-text p {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+        }
+
+        @media (max-width: 900px) {
+            .gateway-layout {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .gateway-image,
+            .gateway-text {
+                width: 100%;
+            }
+        }
+
+        /* =========================================
+           4. 系统架构 (垂直堆栈 - 移动端优化)
+           ========================================= */
+        .arch-section {
+            padding: var(--section-spacing) 0;
+        }
+
+        .arch-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .arch-graphic img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+
+        .stack-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* 侧边指示线 (仅桌面显示) */
+        .stack-lines {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -50px;
+            right: -50px;
+            pointer-events: none;
+        }
+
+        .line-up,
+        .line-down {
+            position: absolute;
+            width: 2px;
+            top: 40px;
+            bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .line-up {
+            left: 0;
+            background: linear-gradient(to top, var(--primary), transparent);
+        }
+
+        .line-down {
+            right: 0;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+        }
+
+        /* 文字旋转 */
+        .line-text {
+            white-space: nowrap;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            background: var(--bg-core);
+            padding: 5px;
+        }
+
+        .text-up {
+            transform: rotate(-90deg);
+            color: var(--primary);
+        }
+
+        .text-down {
+            transform: rotate(90deg);
+            color: var(--accent);
+        }
+
+        .layer-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.6), rgba(2, 6, 23, 0.8));
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: 0.3s;
+            z-index: 2;
+        }
+
+        .layer-box:hover {
+            transform: scale(1.01);
+            border-color: var(--primary);
+        }
+
+        .layer-title {
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 35%;
+        }
+
+        .layer-desc {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            text-align: right;
+            width: 60%;
+        }
+
+        .layer-ai {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.08);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+        }
+
+        .layer-ai .layer-title {
+            color: var(--accent);
+        }
+
+        /* 架构图连接符 */
+        .connector {
+            height: 16px;
+            width: 2px;
+            background: var(--border-light);
+            margin: 0 auto;
+        }
+
+        /* 移动端架构图适配 */
+        @media (max-width: 768px) {
+            .stack-lines {
+                display: none;
+            }
+
+            /* 隐藏两侧连线 */
+            .layer-box {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+                padding: 20px;
+            }
+
+            .layer-title {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .layer-desc {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .arch-body {
+                grid-template-columns: 1fr;
+            }
+
+            .arch-graphic {
+                order: 2;
+            }
+
+            .arch-stack {
+                order: 1;
+            }
+        }
+
+        /* =========================================
+           5. AI 引擎与开源
+           ========================================= */
+        .ai-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .ai-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .ai-list li {
+            margin-bottom: 15px;
+            color: var(--text-sub);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-list i {
+            color: var(--highlight);
+        }
+
+        .os-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 50px;
+        }
+
+        .os-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .os-card:hover {
+            border-color: var(--highlight);
+            transform: translateY(-5px);
+        }
+
+        .os-card i {
+            font-size: 3rem;
+            color: var(--highlight);
+            margin-bottom: 20px;
+        }
+
+        .os-card h4 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .os-card p {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+
+        /* 登录跳转板块样式 */
+        .login-redirect-section {
+            position: relative;
+            padding: 80px 0;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top, rgba(56, 189, 248, 0.35), transparent 55%),
+                radial-gradient(circle at bottom, rgba(129, 140, 248, 0.3), transparent 60%),
+                url('redirectbg.png');
+            background-color: var(--bg-core);
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: soft-light, normal;
+        }
+
+        .login-redirect-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-redirect-card {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 36px;
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85));
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.9);
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+        }
+
+        .login-redirect-card h2 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .login-redirect-card p {
+            color: var(--text-sub);
+            font-size: 0.98rem;
+            max-width: 620px;
+        }
+
+        .login-redirect-actions {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .login-redirect-tip {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .login-redirect-card:hover {
+            border-color: rgba(56, 189, 248, 0.7);
+            box-shadow: 0 40px 100px rgba(15, 23, 42, 0.95);
+        }
+
+        @media (max-width: 768px) {
+            .login-redirect-card {
+                padding: 24px 20px;
+            }
+
+            .login-redirect-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .ai-box {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-image-placeholder {
+                height: 200px;
+                margin-top: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .arch-section,
+            #frontend-ui,
+            #ai-engine,
+            #mobile-app,
+            #opensource {
+                padding: 60px 0 !important;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            padding: 50px 20px;
+            border-top: 1px solid var(--border-light);
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 顶部导航 -->
+    <header>
+        <div class="container nav-flex">
+            <div class="logo-area">
+                <!-- Logo 图片 -->
+                <img src="logo.png" alt="系统 Logo" style="height: 32px; width: auto;">
+                <div class="logo">工程<span>监测</span></div>
+                <!-- 顶部新增的核心卖点 -->
+                <div class="header-price-badge">
+                    <i class="material-icons" style="font-size:14px">sell</i> 全设备 &lt; 200元
+                </div>
+            </div>
+
+            <nav class="nav-links">
+                <a href="#hardware">硬件终端</a>
+                <a href="#architecture">系统架构</a>
+                <a href="#ai-engine">AI 引擎</a>
+                <a href="#opensource">开源方案</a>
+            </nav>
+
+            <a href="#contact" class="contact-btn">联系我们</a>
+        </div>
+    </header>
+
+    <!-- Hero 首屏 -->
+    <section class="hero reveal active">
+        <div class="container">
+            <div class="hero-inner">
+                <div class="hero-tags">
+                    <span class="hero-tag tag-1">完全开源 Open Source</span>
+                    <span class="hero-tag tag-2">全参数自动化</span>
+                    <span class="hero-tag tag-3">AI 智能驱动</span>
+                </div>
+
+                <div class="hero-title-wrapper">
+                    <h1>
+                        <span class="main-text">智能监测平台</span>
+                        <span class="sub-text">AI 驱动的工程安全监测系统</span>
+                    </h1>
+                </div>
+
+                <!-- 核心理念 -->
+                <div class="philosophy-box">
+                    <div class="philosophy-text">“ 我们交付的不仅仅是产品，更是生产产品的能力 ”</div>
+                    <div class="philosophy-sub">Empowering you to build, deploy, and control.</div>
+                </div>
+
+                <p class="hero-desc">
+                    拒绝传统黑盒。我们提供从底层硬件 Gerber、终端固件源码到 AI 分析平台的完整开源方案。
+                    实现高精度、低成本、网格化的全参数自动化安全监测。
+                </p>
+
+                <a href="#opensource" class="btn-hero">
+                    获取开源方案 <i class="material-icons">arrow_forward</i>
+                </a>
+            </div>
+        </div>
+
+        <!-- 核心硬件展示 (响应式Grid) -->
+        <div class="container" style="margin-top: 60px;">
+            <div id="hardware" class="device-grid reveal">
+                <div class="device-card">
+                    <div
+                        style="height:200px; background:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:15px; display:flex;align-items:center;justify-content:center; overflow:hidden;">
+                        <img src="固定式位移计.png" alt="固定式深层水平测斜仪" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <h3>固定式深层水平测斜仪</h3>
+                    <p>SCL3300 传感器 + 自研滤波算法。实现全参数自动采集，0.001° 级高精度分辨率。</p>
+                    <div class="price-badge">每米成本 ≤ 200 元</div>
+                </div>
+
+                <div class="device-card">
+                    <div
+                        style="height:200px; background:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:15px; display:flex;align-items:center;justify-content:center; overflow:hidden;">
+                        <img src="多功能边缘网关.png" alt="多功能采集单元" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <h3>多功能采集单元 (MCU)</h3>
+                    <p>32通道并发，支持振弦与数字传感器混合接入。内置 4G/LoRa，数据毫秒级上云。</p>
+                    <div class="price-badge">单台成本 ≤ 200 元</div>
+                </div>
+
+                <div class="device-card">
+                    <div
+                        style="height:200px; background:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:15px; display:flex;align-items:center;justify-content:center; overflow:hidden;">
+                        <img src="倾角仪.png" alt="高精度倾角仪" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <h3>高精度倾角仪</h3>
+                    <p>用于结构倾斜与变形监测。低功耗设计，支持 AI 边缘计算与异常触发唤醒。</p>
+                    <div class="price-badge">单台成本 ≤ 200 元</div>
+                </div>
+
+                <div class="device-card">
+                    <div
+                        style="height:200px; background:rgba(255,255,255,0.03); border-radius:8px; margin-bottom:15px; display:flex;align-items:center;justify-content:center; overflow:hidden;">
+                        <img src="激光准直.png" alt="激光准直" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <h3>激光准直系统</h3>
+                    <p>高精度激光测量，适用于隧道、桥梁等长距离线性监测场景。</p>
+                    <div class="price-badge">高性价比方案</div>
+                </div>
+            </div>
+
+            <div class="gateway-layout reveal">
+                <div class="gateway-image">
+                    <img src="多功能网关连接示意图.png" alt="多功能网关连接示意图">
+                </div>
+                <div class="gateway-text">
+                    <h3>多功能网关连接示意图</h3>
+                    <p>
+                        多功能采集单元支持接入多种数字信号传感器，以及振弦类传感器（如钢筋计、轴力计等），
+                        通过统一网关完成数据采集与上报。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 系统架构 (重构后) -->
+    <section id="architecture" class="arch-section">
+        <div class="container reveal">
+            <div class="section-header">
+                <h2 class="section-title">系统总体架构</h2>
+                <p style="color:var(--text-sub);">自下而上的全链路闭环，从感知到 AI 决策的垂直整合。</p>
+            </div>
+
+            <div class="arch-body">
+                <div class="arch-stack">
+                    <div class="stack-container">
+                        <!-- 侧边连线 (移动端隐藏) -->
+                        <div class="stack-lines">
+                            <div class="line-up"><span class="line-text text-up">数据上行</span></div>
+                            <div class="line-down"><span class="line-text text-down">控制下行</span></div>
+                        </div>
+
+                        <!-- 架构层级 -->
+                        <div class="layer-box">
+                            <div class="layer-title"><i class="material-icons">people</i> 用户层</div>
+                            <div class="layer-desc">业主 / 监测单位 / 设计院 / 监管平台</div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <div class="layer-box">
+                            <div class="layer-title"><i class="material-icons">web</i> 应用终端层</div>
+                            <div class="layer-desc">
+                                Web 监测平台 / 移动端运维 APP / 可视化大屏
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <!-- AI层高亮 -->
+                        <div class="layer-box layer-ai">
+                            <div class="layer-title"><i class="material-icons">psychology</i> AI 智能决策层</div>
+                            <div class="layer-desc">
+                                AI 助手后台 / 自动化工作流引擎 / 速率趋势分析 / 风险分级评估
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <div class="layer-box">
+                            <div class="layer-title"><i class="material-icons">storage</i> 数据中台层</div>
+                            <div class="layer-desc">
+                                监测数据中台服务 / 时序数据库 / 设备模型管理 / 报警阈值配置
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <div class="layer-box">
+                            <div class="layer-title"><i class="material-icons">settings_ethernet</i> 通信传输层</div>
+                            <div class="layer-desc">4G Cat.1 / NB-IoT / LoRa / MQTT 加密传输</div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <div class="layer-box">
+                            <div class="layer-title"><i class="material-icons">memory</i> 现场边缘层</div>
+                            <div class="layer-desc">
+                                设备固件 / 固定式测斜仪 / 采集单元 (边缘计算、存储)
+                            </div>
+                        </div>
+                        <div class="connector"></div>
+
+                        <div class="layer-box" style="background:rgba(255,255,255,0.03);">
+                            <div class="layer-title"><i class="material-icons">sensors</i> 物理感知层</div>
+                            <div class="layer-desc">振弦传感器 / 数字传感器 / 模拟信号</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 前端监测平台介绍 -->
+    <section id="frontend-ui" style="padding: 80px 0;">
+        <div class="container reveal">
+            <div class="ai-box">
+                <div class="ai-content">
+                    <h3>前端监测平台</h3>
+                    <p style="color:var(--text-sub); margin-bottom:20px;">
+                        基于 <strong>Next.js + React</strong> 构建的 Web 前端监测平台，为基坑工程提供项目级总览、设备告警联动、地图化监测点与报表输出，一站式服务业主与监测单位。
+                    </p>
+                    <ul class="ai-list">
+                        <li><i class="material-icons">dashboard</i>
+                            <strong>项目级安全总览：</strong>首页仪表盘集中展示项目进度、基坑深度、关键责任人信息，并支持在线编辑项目信息。
+                        </li>
+                        <li><i class="material-icons">sensors</i>
+                            <strong>设备与告警联动：</strong>与设备管理、告警中心打通，统计在线/离线/告警设备数量，结合时间维度查看近期告警。
+                        </li>
+                        <li><i class="material-icons">map</i> <strong>地图化监测点总览：</strong>基于天地图与
+                            OpenLayers，在地图上按状态着色监测点，悬停即可查看关键遥测数据与异常原因。</li>
+                        <li><i class="material-icons">insights</i> <strong>多维度趋势分析：</strong>集成
+                            ECharts，对位移、倾角等多参数按时间窗口进行趋势曲线展示，为风险评估提供数据支撑。</li>
+                        <li><i class="material-icons">chat</i> <strong>内置 AI 助手：</strong>支持在前端界面侧边栏呼出 AI
+                            助手，以自然语言查询设备状态、告警原因与历史趋势。</li>
+                    </ul>
+                </div>
+                <div class="ai-image-placeholder"
+                    style="background:rgba(0,0,0,0.3); border-radius:12px; border:1px dashed rgba(139,92,246,0.3); display:flex; align-items:center; justify-content:center; min-height:250px; overflow: hidden;">
+                    <img src="WEBAPP_HOMEPAGE.png" alt="Web 前端监测平台界面" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI 引擎 -->
+    <section id="ai-engine" style="padding: 80px 0;">
+        <div class="container reveal">
+            <div class="ai-box">
+                <div class="ai-content">
+                    <h3>AI 驱动的自动化监测</h3>
+                    <p style="color:var(--text-sub); margin-bottom:20px;">
+                        系统不仅仅是数据的搬运工。内置的 AI 分析引擎让平台具备了“思考”能力，实现从被动监测到主动预警的跨越。
+                    </p>
+                    <ul class="ai-list">
+                        <li><i class="material-icons">trending_up</i> <strong>智能趋势预测：</strong>基于历史数据自动外推变形趋势。</li>
+                        <li><i class="material-icons">account_tree</i> <strong>自动化工作流：</strong>配置“超限→AI 复核→告警”全流程。</li>
+                        <li><i class="material-icons">chat</i> <strong>对话式助手：</strong>自然语言查询监测数据与状态。</li>
+                        <li><i class="material-icons">assignment</i> <strong>自动报告生成：</strong>一键生成日报/周报草稿。</li>
+                    </ul>
+                </div>
+                <div class="ai-image-placeholder"
+                    style="background:rgba(0,0,0,0.3); border-radius:12px; border:1px dashed rgba(139,92,246,0.3); display:flex; align-items:center; justify-content:center; min-height:250px; overflow: hidden;">
+                    <img src="Workflows.png" alt="自动化工作流示意图" style="width: 100%; height: auto;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 移动端 APP 展示 -->
+    <section id="mobile-app" style="padding: 80px 0; background: rgba(255,255,255,0.02);">
+        <div class="container reveal" style="display: flex; align-items: center; gap: 50px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h2 class="section-title">移动端运维 APP</h2>
+                <p style="color: var(--text-sub); margin-bottom: 20px;">
+                    随时随地掌握现场动态。通过移动端运维 APP，工程师可以轻松进行设备配置、数据查看和现场巡检。
+                </p>
+                <ul style="list-style: none; color: var(--text-sub);">
+                    <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
+                            class="material-icons" style="color: var(--primary);">check_circle</i> 实时数据查看</li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
+                            class="material-icons" style="color: var(--primary);">check_circle</i> 蓝牙/NFC 设备配置</li>
+                    <li style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;"><i
+                            class="material-icons" style="color: var(--primary);">check_circle</i> 现场照片上传与标注</li>
+                </ul>
+            </div>
+            <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+                <img src="AndroidAPP.png" alt="移动端运维应用界面"
+                    style="max-width: 300px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            </div>
+        </div>
+    </section>
+
+    <!-- 开源交付 -->
+    <section id="opensource" style="padding: 80px 0;">
+        <div class="container reveal">
+            <div class="section-header">
+                <h2 class="section-title">赋能用户 · 深度开源</h2>
+                <p style="color:var(--text-sub);">我们交付的不仅仅是产品，更是生产产品的能力。</p>
+            </div>
+
+            <div class="os-cards">
+                <div class="os-card">
+                    <i class="material-icons">developer_board</i>
+                    <h4>硬件生产能力</h4>
+                    <p>提供 Gerber、BOM、原理图。您可自主找工厂生产，硬件成本透明可控。</p>
+                </div>
+                <div class="os-card">
+                    <i class="material-icons">code</i>
+                    <h4>软件定制能力</h4>
+                    <p>Web 前端、后端服务、移动端运维等全套源码交付。</p>
+                </div>
+                <div class="os-card">
+                    <i class="material-icons">settings_system_daydream</i>
+                    <h4>系统掌控能力</h4>
+                    <p>私有化部署，数据完全掌握在自己手中。无平台绑定，无隐形费用。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 登录跳转 -->
+    <section id="login-redirect" class="login-redirect-section">
+        <div class="container reveal">
+            <div class="login-redirect-inner">
+                <div class="login-redirect-card">
+                    <h2>在线体验工程监测平台</h2>
+                    <p>
+                        通过浏览器直接访问系统登录页面，进入真实环境体验工程安全监测平台的整体能力，
+                        包括实时数据、设备状态与告警信息查看。
+                    </p>
+                    <div class="login-redirect-actions">
+                        <a href="http://iot.sccjk.com:8080/" class="btn-hero" target="_blank" rel="noopener noreferrer">
+                            进入系统登录页
+                            <i class="material-icons">open_in_new</i>
+                        </a>
+                        <span class="login-redirect-tip">建议在桌面浏览器中打开，获得完整监测与配置功能体验。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer id="contact">
+        <div class="container">
+            <div class="logo" style="justify-content:center; margin-bottom:20px;">
+                工程<span>监测</span>
+            </div>
+            <p>联系人：[ 某某工程师 ] &nbsp;|&nbsp; 电话：[ XXXX-XXXXXXX ] &nbsp;|&nbsp; 邮箱：[ contact@xxx.com ]</p>
+            <p style="margin-top:10px; opacity:0.5; font-size:0.8rem;">
+                &copy; 2023 工程安全监测解决方案. All Rights Reserved. 本页面仅作为产品演示用途。
+            </p>
+        </div>
+    </footer>
+
+    <!-- 滚动检测脚本 + 登录跳转三维动效 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const reveals = document.querySelectorAll('.reveal');
+            const checkScroll = () => {
+                const triggerBottom = window.innerHeight * 0.85;
+                reveals.forEach(box => {
+                    const boxTop = box.getBoundingClientRect().top;
+                    if (boxTop < triggerBottom) {
+                        box.classList.add('active');
+                    }
+                });
+            };
+            window.addEventListener('scroll', checkScroll);
+            checkScroll(); // Init
+
+            // 登录跳转板块 3D 交互
+            const loginSection = document.querySelector('.login-redirect-section');
+            const loginCard = document.querySelector('.login-redirect-card');
+
+            if (loginCard) {
+                const maxRotate = 10; // 最大旋转角度
+                const handleMove = (event) => {
+                    const rect = loginCard.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    const percentX = (x / rect.width) - 0.5;
+                    const percentY = (y / rect.height) - 0.5;
+
+                    const rotateY = percentX * maxRotate;
+                    const rotateX = -percentY * maxRotate;
+
+                    loginCard.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                };
+
+                const resetCard = () => {
+                    loginCard.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg)';
+                };
+
+                loginCard.addEventListener('mousemove', handleMove);
+                loginCard.addEventListener('mouseleave', resetCard);
+            }
+
+            if (loginSection) {
+                const handleBgMove = (event) => {
+                    const rect = loginSection.getBoundingClientRect();
+                    const relX = (event.clientX - rect.left) / rect.width - 0.5;
+                    const relY = (event.clientY - rect.top) / rect.height - 0.5;
+                    const offsetX = relX * 6;
+                    const offsetY = relY * 6;
+                    loginSection.style.backgroundPosition = `${50 + offsetX}% ${50 + offsetY}%`;
+                };
+
+                const resetBg = () => {
+                    loginSection.style.backgroundPosition = 'center';
+                };
+
+                loginSection.addEventListener('mousemove', handleBgMove);
+                loginSection.addEventListener('mouseleave', resetBg);
+            }
+        });
+    </script>
+</body>
+
+</html>
