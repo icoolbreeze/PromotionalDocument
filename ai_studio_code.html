@@ -1098,31 +1098,154 @@
         </div>
     </section>
 
-    <!-- 开源交付 -->
-    <section id="opensource" style="padding: 80px 0;">
+    <!-- 开源交付 (重构版) -->
+    <section id="opensource"
+        style="padding: 80px 0; background: linear-gradient(to bottom, var(--bg-core), rgba(30, 41, 59, 0.3));">
         <div class="container reveal">
             <div class="section-header">
                 <h2 class="section-title">赋能用户 · 深度开源</h2>
-                <p style="color:var(--text-sub);">我们交付的不仅仅是产品，更是生产产品的能力。</p>
+                <p style="color:var(--text-sub); max-width: 800px; margin: 0 auto;">
+                    为什么自动化监测推行缓慢？<br>
+                    <span style="color: #ef4444; font-weight: bold;">成本运维</span> 与 <span
+                        style="color: #ef4444; font-weight: bold;">数据安全</span> 是两大核心阻碍。
+                </p>
             </div>
 
-            <div class="os-cards">
-                <div class="os-card">
-                    <i class="material-icons">developer_board</i>
-                    <h4>硬件生产能力</h4>
-                    <p>提供 Gerber、BOM、原理图。您可自主找工厂生产，硬件成本透明可控。</p>
+            <!-- 行业痛点 -->
+            <div class="pain-points-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 60px;">
+                <!-- 痛点 1 -->
+                <div class="pain-card"
+                    style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 25px; border-radius: 16px; display: flex; flex-direction: column;">
+                    <h3 style="color: #fca5a5; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="material-icons">money_off</i> 成本与运维困境
+                    </h3>
+                    <p style="color: var(--text-sub); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; line-height: 1.7;">
+                        监测单位向设备厂商采购，<strong style="color: #fbbf24; font-weight: 700; background: rgba(251, 191, 36, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(251, 191, 36, 0.3);">溢价高达 5-10 倍</strong>。
+                        大多厂商仅做传感器集成，无核心技术且不支持低功耗，导致电池更换频繁，运维成本激增。
+                    </p>
+                    <!-- 成本困境配图 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 0; border-radius: 8px; overflow: hidden; height: 220px; display: flex; align-items: center; justify-content: center;">
+                        <img src="成本困境.png" alt="设备成本溢价示意图" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                    </div>
+                    <!-- 优化后的提示词（如需重新生成）
+                    Prompt: A minimalist 3D render showing a small industrial sensor inside a premium transparent acrylic display case with a prominent "10x VALUE" price tag. Background features a stack of old, worn-out monitoring devices and scattered dead batteries. Dark studio lighting with subtle reflections. Photorealistic style.
+                    -->
                 </div>
-                <div class="os-card">
-                    <i class="material-icons">code</i>
-                    <h4>软件定制能力</h4>
-                    <p>Web 前端、后端服务、移动端运维等全套源码交付。</p>
-                </div>
-                <div class="os-card">
-                    <i class="material-icons">settings_system_daydream</i>
-                    <h4>系统掌控能力</h4>
-                    <p>私有化部署，数据完全掌握在自己手中。无平台绑定，无隐形费用。</p>
+
+                <!-- 痛点 2 -->
+                <div class="pain-card"
+                    style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); padding: 25px; border-radius: 16px; display: flex; flex-direction: column;">
+                    <h3 style="color: #fca5a5; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <i class="material-icons">security</i> 数据管理与安全隐患
+                    </h3>
+                    <p style="color: var(--text-sub); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; line-height: 1.7;">
+                        数据存储于厂商服务器，面临泄露风险。即使本地部署，也无法判断是否存在<strong style="color: #fb923c; font-weight: 700; background: rgba(251, 146, 60, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(251, 146, 60, 0.3);">多路上传</strong>或<strong style="color: #fb923c; font-weight: 700; background: rgba(251, 146, 60, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(251, 146, 60, 0.3);">预留后门</strong>，数据主权难以保障。
+                    </p>
+                    <!-- 数据安全配图 -->
+                    <div style="background: rgba(0,0,0,0.2); padding: 0; border-radius: 8px; overflow: hidden; height: 220px; display: flex; align-items: center; justify-content: center;">
+                        <img src="数据安全.png" alt="数据安全隐患示意图" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                    </div>
+                    <!-- 优化后的提示词（如需重新生成）
+                    Prompt: A conceptual illustration showing data sovereignty concerns. Split-screen composition: left side shows a locked server with data flowing to unknown cloud servers (red warning indicators), right side shows a secure local server with a shield icon and green checkmarks. Modern, clean vector illustration style with subtle gradients.
+                    -->
                 </div>
             </div>
+
+            <!-- 我们的方案 -->
+            <div class="solution-banner"
+                style="position: relative; text-align: center; margin-bottom: 60px; padding: 50px 40px; background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(139, 92, 246, 0.15), rgba(45, 212, 191, 0.1)); border-radius: 20px; border: 2px solid rgba(14, 165, 233, 0.4); box-shadow: 0 10px 40px rgba(14, 165, 233, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); overflow: hidden;">
+                <!-- 装饰性背景光效 -->
+                <div style="position: absolute; top: -50%; left: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(14, 165, 233, 0.3), transparent 70%); filter: blur(60px); pointer-events: none;"></div>
+                <div style="position: absolute; bottom: -50%; right: -10%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 70%); filter: blur(60px); pointer-events: none;"></div>
+                
+                <!-- 内容 -->
+                <div style="position: relative; z-index: 1;">
+                    <h3 style="color: white; font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.5px;">
+                        <span style="background: linear-gradient(to right, var(--primary), var(--accent)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">开源赋能</span> 
+                        <span style="color: var(--primary); margin: 0 8px;">·</span> 
+                        <span style="color: white;">自主可控</span> 
+                        <span style="color: var(--primary); margin: 0 8px;">·</span> 
+                        <span style="color: var(--highlight);">成本优化</span>
+                    </h3>
+                    <p style="color: #cbd5e1; font-size: clamp(1rem, 2.5vw, 1.15rem); max-width: 750px; margin: 0 auto; line-height: 1.8;">
+                        从硬件设计到固件源码，从云端平台到 AI 引擎，我们交付完整的技术栈与生产能力。<br>
+                        <span style="color: #fff; font-weight: 700; margin-top: 8px; display: inline-block;">让您真正掌握核心技术，实现降本增效与数据主权</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- 生产流程 -->
+            <div class="process-section">
+                <h3 style="color: white; text-align: center; margin-bottom: 35px; font-size: clamp(1.5rem, 3vw, 1.8rem); font-weight: 700;">
+                    <span style="display: inline-block; padding-bottom: 10px; border-bottom: 3px solid var(--primary);">全流程生产指导</span>
+                </h3>
+
+                <!-- 生产流程配图 -->
+                <div style="background: rgba(0,0,0,0.2); padding: 0; border-radius: 12px; margin-bottom: 40px; overflow: hidden; height: 300px; display: flex; align-items: center; justify-content: center;">
+                    <img src="生产流程.png" alt="全流程生产指导示意图" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                </div>
+                <!-- 优化后的提示词（如需重新生成）
+                Prompt: A wide panoramic isometric illustration showing the complete IoT device production workflow. From left to right: 1) Developer at desk with PCB design software and blueprints, 2) Automated SMT assembly line with robotic arms placing components, 3) Quality control station with testing equipment, 4) Firmware flashing workstation with computer screen showing progress bar, 5) Final device installed on an outdoor monitoring pole with solar panel. Clean, modern illustration style with soft shadows and pastel color palette. White/light gray background.
+                -->
+
+                <div class="process-steps"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                    <div class="step-card"
+                        style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light);">
+                        <div style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">01. 硬件准备</div>
+                        <p style="font-size: 0.9rem; color: var(--text-sub);">发送 Gerber 文件至代工厂制板/贴片，按 BOM 采购元器件。</p>
+                    </div>
+                    <div class="step-card"
+                        style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light);">
+                        <div style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">02. 组装烧录</div>
+                        <p style="font-size: 0.9rem; color: var(--text-sub);">采购外壳与耗材，组装设备并烧录固件。</p>
+                    </div>
+                    <div class="step-card"
+                        style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light);">
+                        <div style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">03. 服务部署</div>
+                        <p style="font-size: 0.9rem; color: var(--text-sub);">购买云/本地服务器，一键部署云服务环境。</p>
+                    </div>
+                    <div class="step-card"
+                        style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-light);">
+                        <div style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">04. 上线运行</div>
+                        <p style="font-size: 0.9rem; color: var(--text-sub);">
+                            调试运行，现场安装。<strong>2人/1周</strong>即可完成大多项目生产。</p>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                /* 痛点卡片优化 */
+                .pain-card {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                .pain-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.15);
+                }
+                
+                /* 响应式适配 */
+                @media (max-width: 768px) {
+                    .pain-points-grid {
+                        grid-template-columns: 1fr !important;
+                        gap: 25px !important;
+                    }
+                    
+                    .pain-card {
+                        padding: 20px !important;
+                    }
+                    
+                    .pain-card h3 {
+                        font-size: 1.1rem !important;
+                    }
+                    
+                    .pain-card p {
+                        font-size: 0.9rem !important;
+                    }
+                }
+            </style>
         </div>
     </section>
 
